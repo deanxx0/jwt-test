@@ -15,10 +15,6 @@ export class AppController {
   @Post('auth/login')
   async login(@Request() req) {
     console.log(`Post auth/login!`);
-    // console.log(`req.user: ${req.user}`);
-    // if(req.user == 'fail') {
-    //   return { result: 'fail' };
-    // }
     return this.authService.login(req.user);
   }
 
