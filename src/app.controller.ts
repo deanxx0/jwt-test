@@ -32,6 +32,7 @@ export class AppController {
     return req.user;
   }
 
+  @UsePipes(ValidationPipe)
   @Post('user')
   createUser(@Body() userDto: UserDto): Promise<UserDocument> {
     console.log(`Post user!`);
