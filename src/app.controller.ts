@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth/auth.service';
@@ -13,6 +13,7 @@ import { UserService } from './user/user.service';
 export class AppController {
   constructor(private authService: AuthService, private userService: UserService) {}
 
+  @UsePipes(ValidationPipe)
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   @ApiOperation({ summary: 'id,pw 인증', description: 'token 발행' })
