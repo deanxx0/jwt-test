@@ -36,12 +36,11 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('mytoken')
-  @ApiOperation({ summary: 'my token', description: 'get now using token in cookie'})
+  @ApiOperation({ summary: 'my token', description: 'get now using token in cookie' })
   getMyToken(@Req() request: ExpressRequest) {
     console.log(`Get mytoken!`);
     return request.cookies.access_token;
   }
-
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
