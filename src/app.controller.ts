@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Post, Request, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Request, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
+import { Request as ExpressRequest, Response } from 'express';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
@@ -35,7 +35,18 @@ export class AppController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('mytoken')
+  @ApiOperation({ summary: 'my token', description: 'get now using token in cookie'})
+  @ApiBearerAuth()
+  getMyToken(@Req() request: ExpressRequest) {
+    console.log(`Get mytoken!`);
+    return request.cookies.access_token;
+  }
+
+
+  @UseGuards(JwtAuthGuard)
   @Get('profile')
+  @ApiOperation({ summary: 'Get userid, username'})
   @ApiBearerAuth()
   getProfile(@Request() req) {
     console.log(`Get profile!`);
