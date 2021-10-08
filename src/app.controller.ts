@@ -37,7 +37,6 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('mytoken')
   @ApiOperation({ summary: 'my token', description: 'get now using token in cookie'})
-  @ApiBearerAuth()
   getMyToken(@Req() request: ExpressRequest) {
     console.log(`Get mytoken!`);
     return request.cookies.access_token;
@@ -47,7 +46,6 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   @ApiOperation({ summary: 'Get userid, username'})
-  @ApiBearerAuth()
   getProfile(@Request() req) {
     console.log(`Get profile!`);
     return req.user;
