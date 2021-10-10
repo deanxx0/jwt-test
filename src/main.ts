@@ -8,10 +8,7 @@ import { jwtConstants } from './auth/constants';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: [
-        'http://localhost:8080',
-        'http://http://10.10.1.162:3002',
-    ],
+      origin: true,
       credentials: true,
     }
   });
@@ -27,8 +24,8 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.enableCors({ 
-    origin: '*', 
-    credentials: true 
+    origin: true,
+    credentials: true,
   });
   app.use(json({ limit: '100mb' }));
   app.use(urlencoded({ extended: true, limit: '100mb' }));
