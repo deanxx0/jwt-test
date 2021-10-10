@@ -16,7 +16,7 @@ export class AppController {
 
   @UsePipes(ValidationPipe)
   @UseGuards(LocalAuthGuard)
-  @Post('auth/login')
+  @Post('login')
   @ApiOperation({ summary: 'id,pw 인증', description: 'token 발행' })
   @ApiCreatedResponse({ description: 'access token 발행' })
   @ApiBody({ type: UserDto })
