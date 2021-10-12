@@ -20,7 +20,6 @@ export class AppController {
   @ApiOperation({ summary: 'id,pw 인증', description: 'token 발행' })
   @ApiCreatedResponse({ description: 'access token 발행' })
   @ApiBody({ type: UserDto })
-  // @Header('jwt', 'none')
   async login(@Request() req, @Res({ passthrough: true }) response: Response) {
     console.log(`Post login!`);
     // return this.authService.login(req.user);
