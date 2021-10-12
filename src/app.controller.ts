@@ -37,7 +37,7 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('mytoken')
   @ApiOperation({ summary: 'my token', description: 'get now using token in cookie' })
-  getMyToken(@Req() request: ExpressRequest) {
+  async getMyToken(@Req() request: ExpressRequest) {
     console.log(`Get mytoken!`);
     return request.cookies.access_token;
   }
@@ -45,14 +45,14 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   @ApiOperation({ summary: 'Get userid, username'})
-  getProfile(@Request() req) {
+  async getProfile(@Request() req) {
     console.log(`Get profile!`);
     return req.user;
   }
 
   @UsePipes(ValidationPipe)
   @Post('user')
-  createUser(@Body() userDto: UserDto): Promise<UserDocument> {
+  async createUser(@Body() userDto: UserDto): Promise<UserDocument> {
     console.log(`Post user!`);
     return this.userService.create(userDto);
   }
