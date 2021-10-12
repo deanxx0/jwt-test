@@ -41,7 +41,7 @@ export class AppController {
   @ApiBearerAuth()
   async getProfile(@Request() req) {
     console.log(`Get profile!`);
-    return req.user;
+    return this.userService.findOne(req.user.username);
   }
 
   @UsePipes(ValidationPipe)
