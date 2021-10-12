@@ -25,7 +25,7 @@ export class AppController {
     console.log(`Post login!`);
     // return this.authService.login(req.user);
     const tokenObj = await this.authService.login(req.user);
-    response.set('Authorization', tokenObj.access_token);
+    response.set('access_token', tokenObj.access_token);
 
     // response.cookie(
     //   'access_token',
@@ -42,6 +42,7 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('mytoken')
   @ApiOperation({ summary: 'my token', description: 'get now using token in cookie' })
+  @ApiBearerAuth()
   async getMyToken(@Req() request: ExpressRequest) {
     console.log(`Get mytoken!`);
     return request.headers.authorization;
@@ -50,6 +51,7 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   @ApiOperation({ summary: 'Get userid, username'})
+  @ApiBearerAuth()
   async getProfile(@Request() req) {
     console.log(`Get profile!`);
     return req.user;
