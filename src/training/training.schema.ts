@@ -1,9 +1,8 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import * as mongoose from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Training {
-  @Prop()
-  id: string;
   @Prop()
   serverId: string;
   @Prop()
