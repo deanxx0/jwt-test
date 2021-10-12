@@ -10,6 +10,7 @@ async function bootstrap() {
     cors: {
       origin: true,
       credentials: true,
+      exposedHeaders: 'access_token',
     }
   });
 
@@ -26,6 +27,7 @@ async function bootstrap() {
   app.enableCors({ 
     origin: true,
     credentials: true,
+    exposedHeaders: 'access_token',
   });
   app.use(json({ limit: '100mb' }));
   app.use(urlencoded({ extended: true, limit: '100mb' }));
