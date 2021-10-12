@@ -21,7 +21,7 @@ export class AppController {
   @ApiCreatedResponse({ description: 'access token 발행' })
   @ApiBody({ type: UserDto })
   async login(@Request() req, @Res({ passthrough: true }) response: Response) {
-    console.log(`Post auth/login!`);
+    console.log(`Post login!`);
     // return this.authService.login(req.user);
     const tokenObj = await this.authService.login(req.user);
     response.cookie(
@@ -29,6 +29,8 @@ export class AppController {
       tokenObj.access_token,
       {
         httpOnly: true,
+        sameSite: 'none',
+        secure: true,
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
       }
     )
