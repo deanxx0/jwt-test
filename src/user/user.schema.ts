@@ -6,6 +6,8 @@ export class User {
   username: string;
   @Prop()
   password: string;
+  @Prop()
+  serverindex: number;
 }
 
 export type UserDocument = User & Document;
