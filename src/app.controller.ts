@@ -22,20 +22,8 @@ export class AppController {
   @ApiBody({ type: UserDto })
   async login(@Request() req, @Res({ passthrough: true }) response: Response) {
     console.log(`Post login!`);
-    // return this.authService.login(req.user);
     const tokenObj = await this.authService.login(req.user);
     response.set('access_token', tokenObj.access_token);
-
-    // response.cookie(
-    //   'access_token',
-    //   tokenObj.access_token,
-    //   {
-    //     httpOnly: true,
-    //     sameSite: 'none',
-    //     secure: true,
-    //     expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-    //   }
-    // )
   }
 
   @UseGuards(JwtAuthGuard)
