@@ -25,8 +25,7 @@ export class AppController {
     console.log(`Post login!`);
     // return this.authService.login(req.user);
     const tokenObj = await this.authService.login(req.user);
-    // return tokenObj.access_token;
-    response.set('jwt', tokenObj.access_token);
+    response.set('Authorization', tokenObj.access_token);
 
     // response.cookie(
     //   'access_token',
@@ -45,7 +44,7 @@ export class AppController {
   @ApiOperation({ summary: 'my token', description: 'get now using token in cookie' })
   async getMyToken(@Req() request: ExpressRequest) {
     console.log(`Get mytoken!`);
-    return request.cookies.access_token;
+    return request.headers.authorization;
   }
 
   @UseGuards(JwtAuthGuard)
