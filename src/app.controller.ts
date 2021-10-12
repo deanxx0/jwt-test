@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Request, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Header, Post, Req, Request, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request as ExpressRequest, Response } from 'express';
@@ -20,20 +20,24 @@ export class AppController {
   @ApiOperation({ summary: 'id,pw 인증', description: 'token 발행' })
   @ApiCreatedResponse({ description: 'access token 발행' })
   @ApiBody({ type: UserDto })
+  // @Header('jwt', 'none')
   async login(@Request() req, @Res({ passthrough: true }) response: Response) {
     console.log(`Post login!`);
     // return this.authService.login(req.user);
     const tokenObj = await this.authService.login(req.user);
-    response.cookie(
-      'access_token',
-      tokenObj.access_token,
-      {
-        httpOnly: true,
-        sameSite: 'none',
-        secure: true,
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-      }
-    )
+    // return tokenObj.access_token;
+    response.set('jwt', tokenObj.access_token);
+
+    // response.cookie(
+    //   'access_token',
+    //   tokenObj.access_token,
+    //   {
+    //     httpOnly: true,
+    //     sameSite: 'none',
+    //     secure: true,
+    //     expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+    //   }
+    // )
   }
 
   @UseGuards(JwtAuthGuard)
