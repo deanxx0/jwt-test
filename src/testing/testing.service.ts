@@ -12,8 +12,8 @@ export class TestingService {
     @InjectModel(Testing.name) private testingModel: Model<TestingDocument>,
   ) {}
 
-  async create(postTestingDto: PostTestingDto): Promise<TestingDocument> {
-    const createTestingDto = this.buildCreateTestingDto(postTestingDto);
+  async create(directoryDoc_id: string, postTestingDto: PostTestingDto): Promise<TestingDocument> {
+    const createTestingDto = this.buildCreateTestingDto(directoryDoc_id, postTestingDto);
     const createdDoc = new this.testingModel(createTestingDto);
     return createdDoc.save();
   }
@@ -22,11 +22,11 @@ export class TestingService {
     return this.testingModel.findOne({ _id: _id }).exec();
   }
   
-  buildCreateTestingDto(postTestingDto: PostTestingDto): CreateTestingDto {
+  buildCreateTestingDto(directoryDoc_id: string, postTestingDto: PostTestingDto): CreateTestingDto {
     return {
       _id: (new ObjectID()).toString(),
       name: postTestingDto.name,
-      directoryId: postTestingDto.directoryId,
+      directoryId: directoryDoc_id,
       trainId: postTestingDto.trainId,
     }
   }

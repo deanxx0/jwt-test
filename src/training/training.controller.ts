@@ -29,7 +29,7 @@ export class TrainingController {
   @ApiBody({ type: PostTrainingDto })
   async createTraining(@Body() postTrainingDto: PostTrainingDto) {
     console.log(`create training!`);
-    const directoryDoc = await this.directoryService.create(postTrainingDto);
+    const directoryDoc = await this.directoryService.createFromTraining(postTrainingDto);
     const trainingConfigurationDoc = await this.trainingConfigurationService.create(postTrainingDto);
     const augmentationDoc = await this.augmentationService.create(postTrainingDto);
     const createdTrainingDoc = await this.trainingService.create(
@@ -41,7 +41,7 @@ export class TrainingController {
       ? true : false;
     return {
       success: success,
-      result: augmentationDoc,
+      result: createdTrainingDoc,
     }
   }
 

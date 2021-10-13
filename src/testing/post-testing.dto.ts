@@ -9,8 +9,7 @@ export class PostTestingDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  directoryId: string;
+  datasets: string[];
 
   @ApiProperty()
   @IsNotEmpty()

@@ -5,6 +5,7 @@ import { CreateDirectoryDto } from './create-directory.dto';
 import { Directory, DirectoryDocument } from './directory.schema';
 import { ObjectID } from 'bson';
 import { PostTrainingDto } from 'src/training/post-training.dto';
+import { PostTestingDto } from 'src/testing/post-testing.dto';
 
 @Injectable()
 export class DirectoryService {
@@ -12,8 +13,14 @@ export class DirectoryService {
     @InjectModel(Directory.name) private directoryModel: Model<DirectoryDocument>,
   ) {}
 
-  async create(postTrainingDto: PostTrainingDto): Promise<DirectoryDocument> {
-    const createDirectoryDto = this.buildCreateDirectoryDto(postTrainingDto);
+  async createFromTraining(postTrainingDto: PostTrainingDto): Promise<DirectoryDocument> {
+    const createDirectoryDto = this.buildCreateDirectoryDtoFromTraining(postTrainingDto);
+    const createdDoc = new this.directoryModel(createDirectoryDto);
+    return createdDoc.save();
+  }
+  
+  async createFromTesting(postTestingDto: PostTestingDto): Promise<DirectoryDocument> {
+    const createDirectoryDto = this.buildCreateDirectoryDtoFromTesting(postTestingDto);
     const createdDoc = new this.directoryModel(createDirectoryDto);
     return createdDoc.save();
   }
@@ -22,10 +29,17 @@ export class DirectoryService {
     return this.directoryModel.findOne({ _id: _id }).exec();
   }
 
-  buildCreateDirectoryDto(postTrainingDto: PostTrainingDto): CreateDirectoryDto {
+  buildCreateDirectoryDtoFromTraining(postTrainingDto: PostTrainingDto): CreateDirectoryDto {
     return {
       _id: (new ObjectID()).toString(),
       directories: postTrainingDto.datasets,
+    }
+  }
+  
+  buildCreateDirectoryDtoFromTesting(postTestingDto: PostTestingDto): CreateDirectoryDto {
+    return {
+      _id: (new ObjectID()).toString(),
+      directories: postTestingDto.datasets,
     }
   }
 }
