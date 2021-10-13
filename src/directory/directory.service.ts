@@ -3,8 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateDirectoryDto } from './create-directory.dto';
 import { Directory, DirectoryDocument } from './directory.schema';
-import { PostDirectoryDto } from './post-directory.dto';
 import { ObjectID } from 'bson';
+import { PostTrainingDto } from 'src/training/post-training.dto';
 
 @Injectable()
 export class DirectoryService {
@@ -12,8 +12,8 @@ export class DirectoryService {
     @InjectModel(Directory.name) private directoryModel: Model<DirectoryDocument>,
   ) {}
 
-  async create(postDirectoryDto: PostDirectoryDto): Promise<DirectoryDocument> {
-    const createDirectoryDto = this.buildCreateDirectoryDto(postDirectoryDto);
+  async create(postTrainingDto: PostTrainingDto): Promise<DirectoryDocument> {
+    const createDirectoryDto = this.buildCreateDirectoryDto(postTrainingDto);
     const createdDoc = new this.directoryModel(createDirectoryDto);
     return createdDoc.save();
   }
@@ -22,10 +22,10 @@ export class DirectoryService {
     return this.directoryModel.findOne({ _id: _id }).exec();
   }
 
-  buildCreateDirectoryDto(postDirectoryDto: PostDirectoryDto): CreateDirectoryDto {
+  buildCreateDirectoryDto(postTrainingDto: PostTrainingDto): CreateDirectoryDto {
     return {
       _id: (new ObjectID()).toString(),
-      directories: postDirectoryDto.directories,
+      directories: postTrainingDto.datasets,
     }
   }
 }

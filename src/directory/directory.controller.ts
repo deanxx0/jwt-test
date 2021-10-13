@@ -3,22 +3,10 @@ import { ApiBearerAuth, ApiBody, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { DirectoryDocument } from './directory.schema';
 import { DirectoryService } from './directory.service';
-import { PostDirectoryDto } from './post-directory.dto';
 
 @Controller('directory')
 export class DirectoryController {
   constructor(private directoryService: DirectoryService) {}
-
-  @UseGuards(JwtAuthGuard)
-  @UsePipes(ValidationPipe)
-  @Post()
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'create directory '})
-  @ApiBody({ type: PostDirectoryDto })
-  async createDirectory(@Body() postDirectoryDto: PostDirectoryDto): Promise<DirectoryDocument> {
-    console.log(`create directory!`);
-    return this.directoryService.create(postDirectoryDto);
-  }
 
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)

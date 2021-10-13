@@ -9,6 +9,7 @@ import { DirectoryService } from './directory.service';
     MongooseModule.forFeature([{ name: Directory.name, schema: DirectorySchema }]),
   ],
   controllers: [DirectoryController],
-  providers: [DirectoryService]
+  providers: [DirectoryService],
+  exports: [DirectoryService],
 })
 export class DirectoryModule {}

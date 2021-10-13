@@ -1,13 +1,14 @@
 import { Body, Controller, Get, Post, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { DirectoryService } from 'src/directory/directory.service';
 import { PostTrainingDto } from './post-training.dto';
 import { TrainingDocument } from './training.schema';
 import { TrainingService } from './training.service';
 
 @Controller('training')
 export class TrainingController {
-  constructor(private trainingService: TrainingService) {}
+  constructor(private trainingService: TrainingService, private directoryService: DirectoryService) {}
 
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
@@ -15,9 +16,14 @@ export class TrainingController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'create training'})
   @ApiBody({ type: PostTrainingDto })
-  async createTraining(@Body() postTrainingDto: PostTrainingDto): Promise<TrainingDocument> {
+  async createTraining(@Body() postTrainingDto: PostTrainingDto) {
     console.log(`create training!`);
-    return this.trainingService.create(postTrainingDto);
+    const directoryDoc = await this.directoryService.create(postTrainingDto);
+    const success = directoryDoc != null || undefined ? true : false;
+    return {
+      success: success,
+      result: directoryDoc,
+    }
   }
 
   @UseGuards(JwtAuthGuard)

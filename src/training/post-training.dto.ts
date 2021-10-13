@@ -6,24 +6,42 @@ export class PostTrainingDto {
   @IsNotEmpty()
   @IsString()
   name: string;
-
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  serverId: string;
-
+  datasets: string[];
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  directoryId: string;
-
+  augmentation: {
+    mirror: boolean,
+    flip: boolean,
+    rotation90: boolean,
+    zoom: number,
+    tilt: number,
+    shift: number,
+    rotation: number,
+    contrast: number,
+    brightness: number,
+    smoothFiltering: number,
+    noise: number,
+    colorNoise: number,
+    partialFocus: number,
+    shade: number,
+    hue: number,
+    saturation: number,
+    maxRandomAugmentCount: number,
+    probability: number,
+    borderMode: number,
+  };
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  configurationId: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  augmentationId: string;
+  configuration: {
+    batch_size: number,
+    pretrained_data: string,
+    width: number,
+    height: number,
+    channels: number,
+    baseLearningRate: number,
+    gamma: number,
+    stepCount: number,
+  }
 }
