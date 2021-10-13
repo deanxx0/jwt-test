@@ -44,13 +44,16 @@ export class TrainingController {
   @Get(':_id')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get training by id'})
-  async findOneById(@Param('_id') _id: string): Promise<ApiResponseDto> {
+  async getTrainingBy_id(@Param('_id') _id: string): Promise<ApiResponseDto> {
     console.log(`get training by id!`);
-    const findResult = await this.trainingService.findOneById(_id);
-    const success = findResult != null ? true : false;
+    //const findResult = await this.trainingService.findOneById(_id);
+    const trainServerResponse = await this.trainingService.getTrainInfo(_id);
+    console.log(`trainServerResponse: ${trainServerResponse}`);
+    
+    const success = trainServerResponse != null ? true : false;
     return {
       success: success,
-      result: findResult,
+      result: trainServerResponse,
     }
     // 학습 조회
     // id를 기반으로 학습서버에 요청
