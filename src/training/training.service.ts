@@ -14,8 +14,10 @@ export class TrainingService {
 
   async create(postTrainingDto: PostTrainingDto): Promise<TrainingDocument> {
     const createTrainingDto = this.buildCreateTrainingDto(postTrainingDto);
-    console.log(`createTrainingDto: ${createTrainingDto}`);
     const createdDoc = new this.trainingModel(createTrainingDto);
+
+
+    
     return createdDoc.save();
   }
 
