@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AugmentationDocument } from 'src/augmentation/augmentation.schema';
 import { AugmentationService } from 'src/augmentation/augmentation.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -13,6 +13,7 @@ import { TrainingDocument } from './training.schema';
 import { TrainingService } from './training.service';
 
 @Controller('training')
+@ApiTags('training')
 export class TrainingController {
   constructor(
     private trainingService: TrainingService, 
