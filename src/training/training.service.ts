@@ -12,24 +12,34 @@ export class TrainingService {
     @InjectModel(Training.name) private trainingModel: Model<TrainingDocument>,
   ) {}
 
-  // async create(postTrainingDto: PostTrainingDto): Promise<TrainingDocument> {
-  //   const createTrainingDto = this.buildCreateTrainingDto(postTrainingDto);
-  //   const createdDoc = new this.trainingModel(createTrainingDto);
-  //   return createdDoc.save();
-  // }
+  async create(
+    directoryDoc_id: string, 
+    trainingConfigurationDoc_id: string, 
+    augmentationDoc_id: string,
+    postTrainingDtoName: string,
+  ): Promise<TrainingDocument> {
+    const createTrainingDto = this.buildCreateTrainingDto(directoryDoc_id, trainingConfigurationDoc_id, augmentationDoc_id, postTrainingDtoName);
+    const createdDoc = new this.trainingModel(createTrainingDto);
+    return createdDoc.save();
+  }
 
   async findOneById(_id: string): Promise<TrainingDocument> {
     return this.trainingModel.findOne({ _id: _id }).exec();
   }
 
-  // buildCreateTrainingDto(postTrainingDto: PostTrainingDto): CreateTrainingDto {
-  //   return {
-  //     _id: (new ObjectID()).toString(),
-  //     name: postTrainingDto.name,
-  //     serverId: postTrainingDto.serverId,
-  //     directoryId: postTrainingDto.directoryId,
-  //     configurationId: postTrainingDto.configurationId,
-  //     augmentationId: postTrainingDto.augmentationId,
-  //   }
-  // }
+  buildCreateTrainingDto(
+    directoryDoc_id: string, 
+    trainingConfigurationDoc_id: string, 
+    augmentationDoc_id: string,
+    postTrainingDtoName: string,
+  ): CreateTrainingDto {
+    return {
+      _id: (new ObjectID()).toString(),
+      name: postTrainingDtoName,
+      serverId: "server0_test_serverId",
+      directoryId: directoryDoc_id,
+      configurationId: trainingConfigurationDoc_id,
+      augmentationId: augmentationDoc_id,
+    }
+  }
 }

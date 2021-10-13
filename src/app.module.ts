@@ -8,6 +8,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TrainingModule } from './training/training.module';
 import { TestingModule } from './testing/testing.module';
 import { DirectoryModule } from './directory/directory.module';
+import { TrainingConfigurationModule } from './training-configuration/training-configuration.module';
+import { AugmentationModule } from './augmentation/augmentation.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { DirectoryModule } from './directory/directory.module';
     TrainingModule,
     TestingModule,
     DirectoryModule,
+    TrainingConfigurationModule,
+    AugmentationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
