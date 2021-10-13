@@ -1,8 +1,15 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import * as mongoose from 'mongoose';
+import { ObjectID } from 'bson';
 
 @Schema({ timestamps: true })
 export class Training {
+  constructor() {
+    this.id = (new ObjectID()).toString();
+  }
+  @Prop()
+  id: string;
+  @Prop()
+  name: string;
   @Prop()
   serverId: string;
   @Prop()
