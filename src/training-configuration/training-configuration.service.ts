@@ -18,6 +18,10 @@ export class TrainingConfigurationService {
     return createdDoc.save();
   }
 
+  async findOneById(_id: string): Promise<TrainingConfigurationDocument> {
+    return this.trainingConfigurationModel.findOne({ _id: _id }).exec();
+  }
+
   buildCreateTrainingConfigurationDto(postTrainingDto: PostTrainingDto): CreateTrainingConfigurationDto {
     return {
       _id: (new ObjectID()).toString(),
