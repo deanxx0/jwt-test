@@ -26,11 +26,7 @@ export class TrainingService {
     return createdDoc.save();
   }
 
-  // async findOneById(_id: string): Promise<TrainingDocument> {
-  //   return this.trainingModel.findOne({ _id: _id }).exec();
-  // }
-
-  async getTrainInfo(_id: string): Promise<Observable<AxiosResponse<any>>> {
+  async getTrainInfoFromTrainserver(_id: string): Promise<Observable<AxiosResponse<any>>> {
     const response = await this.httpService.get(`http://localhost:3000/${_id}`).toPromise();
     return response.data;
   }

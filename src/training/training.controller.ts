@@ -47,7 +47,7 @@ export class TrainingController {
   async getTrainingBy_id(@Param('_id') _id: string): Promise<ApiResponseDto> {
     console.log(`get training by id!`);
     //const findResult = await this.trainingService.findOneById(_id);
-    const trainServerResponseData = await this.trainingService.getTrainInfo(_id);
+    const trainServerResponseData = await this.trainingService.getTrainInfoFromTrainserver(_id);
     console.log(`trainServerResponse: ${trainServerResponseData}`);
     
     const success = trainServerResponseData != null ? true : false;
@@ -58,7 +58,6 @@ export class TrainingController {
     // 학습 조회
     // id를 기반으로 학습서버에 요청
     // 학습서버의 응답을 필요할 경우 정제하여 프론트에 응답
-    // 응답 result dto 따로 필요할듯. 응답 마다 dto가 있어야하는가.
   }
 
   @UseGuards(JwtAuthGuard)
