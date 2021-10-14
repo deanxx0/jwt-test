@@ -26,13 +26,13 @@ export class TrainingService {
     return createdDoc.save();
   }
 
-  async getTrainInfoFromTrainserver(_id: string): Promise<Observable<AxiosResponse<any>>> {
-    const response = await this.httpService.get(`http://localhost:3000/${_id}`).toPromise();
-    return response.data;
-  }
-
   async deleteTrainingBy_id(_id: string): Promise<TrainingDocument> {
     return this.trainingModel.findByIdAndDelete(_id).exec();
+  }
+
+  async getTrainInfoFromTrainServer(_id: string): Promise<Observable<AxiosResponse<any>>> {
+    const response = await this.httpService.get(`http://localhost:3000/${_id}`).toPromise();
+    return response.data;
   }
 
   buildCreateTrainingDto(

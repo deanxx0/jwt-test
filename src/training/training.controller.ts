@@ -41,27 +41,6 @@ export class TrainingController {
 
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
-  @Get(':_id')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'get training by id'})
-  async getTrainingBy_id(@Param('_id') _id: string): Promise<ApiResponseDto> {
-    console.log(`get training by id!`);
-    //const findResult = await this.trainingService.findOneById(_id);
-    const trainServerResponseData = await this.trainingService.getTrainInfoFromTrainserver(_id);
-    console.log(`trainServerResponse: ${trainServerResponseData}`);
-    
-    const success = trainServerResponseData != null ? true : false;
-    return {
-      success: success,
-      result: trainServerResponseData,
-    }
-    // 학습 조회
-    // id를 기반으로 학습서버에 요청
-    // 학습서버의 응답을 필요할 경우 정제하여 프론트에 응답
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @UsePipes(ValidationPipe)
   @Delete(':_id')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'delete training by id'})
@@ -73,5 +52,26 @@ export class TrainingController {
       success: success,
       result: deletedTrainingDoc,
     }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(ValidationPipe)
+  @Get(':_id')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'get training by id'})
+  async getTrainingBy_id(@Param('_id') _id: string): Promise<ApiResponseDto> {
+    console.log(`get training by id!`);
+    //const findResult = await this.trainingService.findOneById(_id);
+    const trainServerResponseData = await this.trainingService.getTrainInfoFromTrainServer(_id);
+    console.log(`trainServerResponse: ${trainServerResponseData}`);
+    
+    const success = trainServerResponseData != null ? true : false;
+    return {
+      success: success,
+      result: trainServerResponseData,
+    }
+    // 학습 조회
+    // id를 기반으로 학습서버에 요청
+    // 학습서버의 응답을 필요할 경우 정제하여 프론트에 응답
   }
 }

@@ -18,8 +18,8 @@ export class TestingService {
     return createdDoc.save();
   }
 
-  async findOneById(_id: string): Promise<TestingDocument> {
-    return this.testingModel.findOne({ _id: _id }).exec();
+  async deleteTestingBy_id(_id: string): Promise<TestingDocument> {
+    return this.testingModel.findByIdAndDelete(_id).exec();
   }
   
   buildCreateTestingDto(directoryDoc_id: string, postTestingDto: PostTestingDto): CreateTestingDto {
