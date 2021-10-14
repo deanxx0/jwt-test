@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AugmentationModule } from 'src/augmentation/augmentation.module';
 import { DirectoryModule } from 'src/directory/directory.module';
@@ -10,6 +10,7 @@ import { TrainingService } from './training.service';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Training.name, schema: TrainingSchema }]),
+    HttpModule,
     DirectoryModule,
     TrainingConfigurationModule,
     AugmentationModule,

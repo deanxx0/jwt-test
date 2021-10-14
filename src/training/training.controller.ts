@@ -47,13 +47,13 @@ export class TrainingController {
   async getTrainingBy_id(@Param('_id') _id: string): Promise<ApiResponseDto> {
     console.log(`get training by id!`);
     //const findResult = await this.trainingService.findOneById(_id);
-    const trainServerResponse = await this.trainingService.getTrainInfo(_id);
-    console.log(`trainServerResponse: ${trainServerResponse}`);
+    const trainServerResponseData = await this.trainingService.getTrainInfo(_id);
+    console.log(`trainServerResponse: ${trainServerResponseData}`);
     
-    const success = trainServerResponse != null ? true : false;
+    const success = trainServerResponseData != null ? true : false;
     return {
       success: success,
-      result: trainServerResponse,
+      result: trainServerResponseData,
     }
     // 학습 조회
     // id를 기반으로 학습서버에 요청
