@@ -18,6 +18,10 @@ export class AugmentationService {
     return createdDoc.save();
   }
 
+  async findOneById(_id: string): Promise<AugmentationDocument> {
+    return this.augmentationModel.findOne({ _id: _id }).exec();
+  }
+
   buildCreateAugmentationDto(postTrainingDto: PostTrainingDto): CreateAugmentationDto {
     return {
       _id: (new ObjectID()).toString(),

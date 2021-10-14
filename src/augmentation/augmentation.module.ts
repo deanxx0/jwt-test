@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Augmentation, AugmentationSchema } from './augmentation.schema';
 import { AugmentationService } from './augmentation.service';
+import { AugmentationController } from './augmentation.controller';
 
 @Module({
   imports: [
@@ -9,5 +10,6 @@ import { AugmentationService } from './augmentation.service';
   ],
   providers: [AugmentationService],
   exports: [AugmentationService],
+  controllers: [AugmentationController],
 })
 export class AugmentationModule {}
