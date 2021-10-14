@@ -10,6 +10,7 @@ import { UserDocument } from './user/user.schema';
 import { UserService } from './user/user.service';
 import { interval, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ApiResponseDto } from './api-response.dto';
 
 @Controller()
 @ApiTags('login')
@@ -22,10 +23,17 @@ export class AppController {
   @ApiOperation({ summary: 'id,pw 인증', description: 'token 발행' })
   @ApiCreatedResponse({ description: 'access token 발행' })
   @ApiBody({ type: UserDto })
-  async login(@Request() req, @Res({ passthrough: true }) response: Response) {
+  async login(@Request() req, @Res({ passthrough: true }) response: Response): Promise<ApiResponseDto> {
     console.log(`Post login!`);
     const tokenObj = await this.authService.login(req.user);
     response.set('access_token', tokenObj.access_token);
+    const success = tokenObj != null ? true : false;
+    return {
+      success: success,
+      result: {
+        access_token: tokenObj.access_token,
+      }
+    }
   }
 
   @UseGuards(JwtAuthGuard)
