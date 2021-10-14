@@ -35,6 +35,10 @@ export class TrainingService {
     return response.data;
   }
 
+  async deleteTrainingBy_id(_id: string): Promise<TrainingDocument> {
+    return this.trainingModel.findByIdAndDelete(_id).exec();
+  }
+
   buildCreateTrainingDto(
     directoryDoc_id: string, 
     trainingConfigurationDoc_id: string, 

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ApiResponseDto } from 'src/api-response.dto';
 import { AugmentationService } from 'src/augmentation/augmentation.service';
@@ -59,5 +59,20 @@ export class TrainingController {
     // id를 기반으로 학습서버에 요청
     // 학습서버의 응답을 필요할 경우 정제하여 프론트에 응답
     // 응답 result dto 따로 필요할듯. 응답 마다 dto가 있어야하는가.
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(ValidationPipe)
+  @Delete(':_id')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'delete training by id'})
+  async deleteTrainingBy_id(@Param('_id') _id: string): Promise<ApiResponseDto> {
+    console.log(`delete training by id!`);
+    const deletedTrainingDoc = await this.trainingService.deleteTrainingBy_id(_id);
+    const success = deletedTrainingDoc != null ? true : false;
+    return {
+      success: success,
+      result: deletedTrainingDoc,
+    }
   }
 }
