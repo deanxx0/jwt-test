@@ -9,6 +9,7 @@ import { TestingModule } from './testing/testing.module';
 import { DirectoryModule } from './directory/directory.module';
 import { TrainingConfigurationModule } from './training-configuration/training-configuration.module';
 import { AugmentationModule } from './augmentation/augmentation.module';
+import { ResourceModule } from './resource/resource.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AugmentationModule } from './augmentation/augmentation.module';
     DirectoryModule,
     TrainingConfigurationModule,
     AugmentationModule,
+    ResourceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
