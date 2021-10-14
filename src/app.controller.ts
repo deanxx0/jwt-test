@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Header, Post, Req, Request, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Header, Post, Req, Request, Res, Sse, UseGuards, UsePipes, ValidationPipe, MessageEvent } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request as ExpressRequest, Response } from 'express';
@@ -8,6 +8,8 @@ import { LocalAuthGuard } from './auth/local-auth.guard';
 import { UserDto } from './user/user.dto';
 import { UserDocument } from './user/user.schema';
 import { UserService } from './user/user.service';
+import { interval, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Controller()
 @ApiTags('login')
@@ -49,5 +51,11 @@ export class AppController {
   async createUser(@Body() userDto: UserDto): Promise<UserDocument> {
     console.log(`Post user!`);
     return this.userService.create(userDto);
+  }
+
+  @Sse('sse')
+  sse(): Observable<MessageEvent> {
+    console.log(`sse controller method!`);
+    return interval(1000).pipe(map((_) => ({ data: { hello: 'world' } })));
   }
 }
