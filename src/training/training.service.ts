@@ -31,7 +31,7 @@ export class TrainingService {
   }
 
   async getTrainInfoFromTrainServer(_id: string): Promise<Observable<AxiosResponse<any>>> {
-    const response = await this.httpService.get(`http://localhost:3000/${_id}`).toPromise();
+    const response = await this.httpService.get(`http://10.10.1.11:3000/training/${_id}`).toPromise();
     return response.data;
   }
 

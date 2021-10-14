@@ -64,14 +64,10 @@ export class TrainingController {
     //const findResult = await this.trainingService.findOneById(_id);
     const trainServerResponseData = await this.trainingService.getTrainInfoFromTrainServer(_id);
     console.log(`trainServerResponse: ${trainServerResponseData}`);
-    
     const success = trainServerResponseData != null ? true : false;
     return {
       success: success,
       result: trainServerResponseData,
     }
-    // 학습 조회
-    // id를 기반으로 학습서버에 요청
-    // 학습서버의 응답을 필요할 경우 정제하여 프론트에 응답
   }
 }
