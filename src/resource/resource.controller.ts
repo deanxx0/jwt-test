@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { ApiResponseDto } from 'src/api-response.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -12,12 +12,13 @@ export class ResourceController {
 
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
-  @Get(':_id')
+  @Get()
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get resources' })
-  async getResourceBy_id(): Promise<ApiResponseDto> {
+  async getResourceBy_id(@Body() serverIndexObj): Promise<ApiResponseDto> {
     console.log(`get resources by id!`);
-    const resourcesDoc = await this.resourceService.getResourceFromTrainServer();
+    const serverIndex: number = serverIndexObj.serverIndex;
+    const resourcesDoc = await this.resourceService.getResourceFromTrainServer(serverIndex);
     const success = resourcesDoc != null ? true : false;
     return {
       success: success,
