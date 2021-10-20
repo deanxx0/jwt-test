@@ -10,6 +10,7 @@ import { DirectoryModule } from './directory/directory.module';
 import { TrainingConfigurationModule } from './training-configuration/training-configuration.module';
 import { AugmentationModule } from './augmentation/augmentation.module';
 import { ResourceModule } from './resource/resource.module';
+import { ServerModule } from './server/server.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ResourceModule } from './resource/resource.module';
     TrainingConfigurationModule,
     AugmentationModule,
     ResourceModule,
+    ServerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
