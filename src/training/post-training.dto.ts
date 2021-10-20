@@ -35,13 +35,14 @@ export class PostTrainingDto {
   @ApiProperty()
   @IsNotEmpty()
   configuration: {
-    batch_size: number,
-    pretrained_data: string,
+    batchSize: number,
+    pretrainedData: string,
     width: number,
     height: number,
     channels: number,
     baseLearningRate: number,
     gamma: number,
     stepCount: number,
+    maxIteration: number,
   }
 }
