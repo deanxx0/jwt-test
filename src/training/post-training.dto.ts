@@ -36,7 +36,7 @@ export class PostTrainingDto {
   @IsNotEmpty()
   configuration: {
     batchSize: number,
-    pretrainedData: string,
+    pretrainData: string,
     width: number,
     height: number,
     channels: number,

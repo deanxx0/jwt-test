@@ -26,7 +26,7 @@ export class TrainingConfigurationService {
     return {
       _id: (new ObjectID()).toString(),
       batchSize: postTrainingDto.configuration.batchSize,
-      pretrainData: postTrainingDto.configuration.pretrainedData,
+      pretrainData: postTrainingDto.configuration.pretrainData,
       width: postTrainingDto.configuration.width,
       height: postTrainingDto.configuration.height,
       channels: postTrainingDto.configuration.channels,
