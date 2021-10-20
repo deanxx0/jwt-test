@@ -13,12 +13,14 @@ export class TrainingConfigurationService {
   ) {}
 
   async create(postTrainingDto: PostTrainingDto): Promise<TrainingConfigurationDocument> {
+    console.log(`[training configuration service] create`);
     const createTrainingConfigurationDto = this.buildCreateTrainingConfigurationDto(postTrainingDto);
     const createdDoc = new this.trainingConfigurationModel(createTrainingConfigurationDto);
     return createdDoc.save();
   }
 
   async findOneById(_id: string): Promise<TrainingConfigurationDocument> {
+    console.log(`[training configuration service] findOneById`);
     return this.trainingConfigurationModel.findOne({ _id: _id }).exec();
   }
 

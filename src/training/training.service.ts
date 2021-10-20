@@ -24,26 +24,30 @@ export class TrainingService {
     postTrainingDtoName: string,
     serverId: string,
   ): Promise<TrainingDocument> {
+    console.log(`[training service] create`);
     const createTrainingDto = this.buildCreateTrainingDto(serverId, directoryDoc_id, trainingConfigurationDoc_id, augmentationDoc_id, postTrainingDtoName);
     const createdDoc = new this.trainingModel(createTrainingDto);
     return createdDoc.save();
   }
 
+  async deleteTrainingBy_id(_id: string): Promise<TrainingDocument> {
+    console.log(`[training service] deleteTrainingBy_id`);
+    return this.trainingModel.findByIdAndDelete(_id).exec();
+  }
+
   async postTrain(postTrainingDto: PostTrainingDto): Promise<string> {
     const postTrainToTrainServerDto = await this.buildPostTrainToTrainServerDto(postTrainingDto);
     const response = await this.httpService.post(
-      `http://10.10.1.11:5000/train`,
+      `http://10.10.1.172:5000/trains`,
       postTrainToTrainServerDto,
     ).toPromise();
+    console.log(`[training service] postTrain`);
     return response.data.result.id;
-  }
-
-  async deleteTrainingBy_id(_id: string): Promise<TrainingDocument> {
-    return this.trainingModel.findByIdAndDelete(_id).exec();
   }
 
   async getTrainInfoFromTrainServer(_id: string): Promise<Observable<AxiosResponse<any>>> {
     const response = await this.httpService.get(`http://10.10.1.11:5000/training/${_id}`).toPromise();
+    console.log(`[training service] getTrainInfoFromTrainServer`);
     return response.data;
   }
 
@@ -56,7 +60,7 @@ export class TrainingService {
       val_label_list_path: 'w:/TS지원/sample_dataset/label_val.txt',
       train_params: {
         gpu_id: 0,
-        iterations: 0,
+        iterations: postTrainingDto.configuration.maxIteration,
         network: {
           batch_size: postTrainingDto.configuration.batchSize,
           pretrain_data: postTrainingDto.configuration.pretrainData,

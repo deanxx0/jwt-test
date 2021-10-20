@@ -13,12 +13,14 @@ export class AugmentationService {
   ) {}
 
   async create(postTrainingDto: PostTrainingDto): Promise<AugmentationDocument> {
+    console.log(`[augmentation service] create`);
     const createAugmentationDto = this.buildCreateAugmentationDto(postTrainingDto);
     const createdDoc = new this.augmentationModel(createAugmentationDto);
     return createdDoc.save();
   }
 
   async findOneById(_id: string): Promise<AugmentationDocument> {
+    console.log(`[augmentation service] findOneById`);
     return this.augmentationModel.findOne({ _id: _id }).exec();
   }
 

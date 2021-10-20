@@ -11,11 +11,13 @@ export class UserService {
   ) {}
 
   async create(userDto: UserDto): Promise<UserDocument> {
+    console.log(`[user service] create`);
     const createdDoc = new this.userModel(userDto);
     return createdDoc.save();
   }
 
   async findOne(username: string): Promise<UserDocument> {
+    console.log(`[user service] findOne`);
     return this.userModel.findOne({ username: username }).exec();
   }
 }

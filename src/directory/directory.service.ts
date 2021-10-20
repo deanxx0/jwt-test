@@ -14,18 +14,21 @@ export class DirectoryService {
   ) {}
 
   async createFromTraining(postTrainingDto: PostTrainingDto): Promise<DirectoryDocument> {
+    console.log(`[directory service] createFromTraining`);
     const createDirectoryDto = this.buildCreateDirectoryDtoFromTraining(postTrainingDto);
     const createdDoc = new this.directoryModel(createDirectoryDto);
     return createdDoc.save();
   }
   
   async createFromTesting(postTestingDto: PostTestingDto): Promise<DirectoryDocument> {
+    console.log(`[directory service] createFromTesting`);
     const createDirectoryDto = this.buildCreateDirectoryDtoFromTesting(postTestingDto);
     const createdDoc = new this.directoryModel(createDirectoryDto);
     return createdDoc.save();
   }
 
   async findOneById(_id: string): Promise<DirectoryDocument> {
+    console.log(`[directory service] findOneById`);
     return this.directoryModel.findOne({ _id: _id }).exec();
   }
 
