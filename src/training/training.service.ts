@@ -25,7 +25,7 @@ export class TrainingService {
     serverId: string,
   ): Promise<TrainingDocument> {
     console.log(`[training service] create`);
-    const createTrainingDto = this.buildCreateTrainingDto(serverId, directoryDoc_id, trainingConfigurationDoc_id, augmentationDoc_id, postTrainingDtoName);
+    const createTrainingDto = this.buildCreateTrainingDto(directoryDoc_id, trainingConfigurationDoc_id, augmentationDoc_id, postTrainingDtoName, serverId);
     const createdDoc = new this.trainingModel(createTrainingDto);
     return createdDoc.save();
   }
@@ -54,10 +54,10 @@ export class TrainingService {
   buildPostTrainToTrainServerDto(postTrainingDto: PostTrainingDto): PostTrainToTrainServerDto {
     return {
       target_type: 'venus',
-      image_list_path: 'w:/TS지원/sample_dataset/img.txt',
-      label_list_path: 'w:/TS지원/sample_dataset/label.txt',
-      val_image_list_path: 'w:/TS지원/sample_dataset/img_val.txt',
-      val_label_list_path: 'w:/TS지원/sample_dataset/label_val.txt',
+      image_list_path: 'Z:/det_01/img.txt',
+      label_list_path: 'Z:/det_01/label.txt',
+      val_image_list_path: 'Z:/det_01/img_val.txt',
+      val_label_list_path: 'Z:/det_01/label_val.txt',
       train_params: {
         gpu_id: 0,
         iterations: postTrainingDto.configuration.maxIteration,
