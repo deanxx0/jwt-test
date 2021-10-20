@@ -8,11 +8,11 @@ export class CreateTrainingConfigurationDto {
   _id: string;
   @ApiProperty()
   @IsNotEmpty()
-  batch_size: number;
+  batchSize: number;
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  pretrain_data: string;
+  pretrainData: string;
   @ApiProperty()
   @IsNotEmpty()
   width: number;
@@ -31,4 +31,7 @@ export class CreateTrainingConfigurationDto {
   @ApiProperty()
   @IsNotEmpty()
   stepCount: number;
+  @ApiProperty()
+  @IsNotEmpty()
+  maxIteration: number;
 }

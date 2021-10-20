@@ -25,14 +25,15 @@ export class TrainingConfigurationService {
   buildCreateTrainingConfigurationDto(postTrainingDto: PostTrainingDto): CreateTrainingConfigurationDto {
     return {
       _id: (new ObjectID()).toString(),
-      batch_size: postTrainingDto.configuration.batch_size,
-      pretrain_data: postTrainingDto.configuration.pretrained_data,
+      batchSize: postTrainingDto.configuration.batchSize,
+      pretrainData: postTrainingDto.configuration.pretrainedData,
       width: postTrainingDto.configuration.width,
       height: postTrainingDto.configuration.height,
       channels: postTrainingDto.configuration.channels,
       baseLearningRate: postTrainingDto.configuration.baseLearningRate,
       gamma: postTrainingDto.configuration.gamma,
       stepCount: postTrainingDto.configuration.stepCount,
+      maxIteration: postTrainingDto.configuration.maxIteration,
     }
   }
 }
