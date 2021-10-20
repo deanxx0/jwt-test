@@ -6,6 +6,8 @@ import { Training, TrainingDocument } from './training.schema';
 import { ObjectID } from 'bson';
 import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
+import { PostTrainingDto } from './post-training.dto';
+import { PostTrainToTrainServerDto } from './post-train-to-train-server.dto';
 
 
 @Injectable()
@@ -20,10 +22,20 @@ export class TrainingService {
     trainingConfigurationDoc_id: string, 
     augmentationDoc_id: string,
     postTrainingDtoName: string,
+    serverId: string,
   ): Promise<TrainingDocument> {
-    const createTrainingDto = this.buildCreateTrainingDto(directoryDoc_id, trainingConfigurationDoc_id, augmentationDoc_id, postTrainingDtoName);
+    const createTrainingDto = this.buildCreateTrainingDto(serverId, directoryDoc_id, trainingConfigurationDoc_id, augmentationDoc_id, postTrainingDtoName);
     const createdDoc = new this.trainingModel(createTrainingDto);
     return createdDoc.save();
+  }
+
+  async postTrain(postTrainingDto: PostTrainingDto): Promise<string> {
+    const postTrainToTrainServerDto = await this.buildPostTrainToTrainServerDto(postTrainingDto);
+    const response = await this.httpService.post(
+      `http://10.10.1.11:5000/train`,
+      postTrainToTrainServerDto,
+    ).toPromise();
+    return response.data.result.id;
   }
 
   async deleteTrainingBy_id(_id: string): Promise<TrainingDocument> {
@@ -31,8 +43,72 @@ export class TrainingService {
   }
 
   async getTrainInfoFromTrainServer(_id: string): Promise<Observable<AxiosResponse<any>>> {
-    const response = await this.httpService.get(`http://10.10.1.11:3000/training/${_id}`).toPromise();
+    const response = await this.httpService.get(`http://10.10.1.11:5000/training/${_id}`).toPromise();
     return response.data;
+  }
+
+  buildPostTrainToTrainServerDto(postTrainingDto: PostTrainingDto): PostTrainToTrainServerDto {
+    return {
+      target_type: 'venus',
+      image_list_path: 'w:/TS지원/sample_dataset/img.txt',
+      label_list_path: 'w:/TS지원/sample_dataset/label.txt',
+      val_image_list_path: 'w:/TS지원/sample_dataset/img_val.txt',
+      val_label_list_path: 'w:/TS지원/sample_dataset/label_val.txt',
+      train_params: {
+        gpu_id: 0,
+        iterations: 0,
+        network: {
+          batch_size: postTrainingDto.configuration.batchSize,
+          pretrain_data: postTrainingDto.configuration.pretrainData,
+          width: postTrainingDto.configuration.width,
+          height: postTrainingDto.configuration.height,
+          channels: postTrainingDto.configuration.channels
+        },
+        patchmode: {
+          enabled: 0,
+          width: 0,
+          height: 0,
+        },
+        roi: {
+          enabled: 0,
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0,
+        },
+        solver_param: {
+          base_learning_rate: postTrainingDto.configuration.baseLearningRate,
+          gamma: postTrainingDto.configuration.gamma,
+          step_count: postTrainingDto.configuration.stepCount,
+        },
+        augmentation: {
+          mirror: postTrainingDto.augmentation.mirror,
+          flip: postTrainingDto.augmentation.flip,
+          rotation90: postTrainingDto.augmentation.rotation90,
+          zoom: postTrainingDto.augmentation.zoom,
+          tilt: postTrainingDto.augmentation.tilt,
+          shift: postTrainingDto.augmentation.shift,
+          rotation: postTrainingDto.augmentation.rotation,
+          contrast: postTrainingDto.augmentation.contrast,
+          brightness: postTrainingDto.augmentation.brightness,
+          smoothFiltering: postTrainingDto.augmentation.smoothFiltering,
+          noise: postTrainingDto.augmentation.noise,
+          colorNoise: postTrainingDto.augmentation.colorNoise,
+          partialFocus: postTrainingDto.augmentation.partialFocus,
+          shade: postTrainingDto.augmentation.shade,
+          hue: postTrainingDto.augmentation.hue,
+          saturation: postTrainingDto.augmentation.saturation,
+          maxRandomAugmentCount: postTrainingDto.augmentation.maxRandomAugmentCount,
+          probability: postTrainingDto.augmentation.probability,
+          borderMode: postTrainingDto.augmentation.borderMode,
+        }
+      },
+      class_list: {
+        1: '1',
+        2: '2',
+        3: '3',
+      },
+    }
   }
 
   buildCreateTrainingDto(
@@ -40,11 +116,12 @@ export class TrainingService {
     trainingConfigurationDoc_id: string, 
     augmentationDoc_id: string,
     postTrainingDtoName: string,
+    serverId: string,
   ): CreateTrainingDto {
     return {
       _id: (new ObjectID()).toString(),
       name: postTrainingDtoName,
-      serverId: "server0_test_serverId",
+      serverId: serverId,
       directoryId: directoryDoc_id,
       configurationId: trainingConfigurationDoc_id,
       augmentationId: augmentationDoc_id,

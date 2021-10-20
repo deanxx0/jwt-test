@@ -29,8 +29,9 @@ export class TrainingController {
     const directoryDoc = await this.directoryService.createFromTraining(postTrainingDto);
     const trainingConfigurationDoc = await this.trainingConfigurationService.create(postTrainingDto);
     const augmentationDoc = await this.augmentationService.create(postTrainingDto);
+    const serverId: string = await this.trainingService.postTrain(postTrainingDto);
     const createdTrainingDoc = await this.trainingService.create(
-      directoryDoc._id, trainingConfigurationDoc._id, augmentationDoc._id, postTrainingDto.name
+      directoryDoc._id, trainingConfigurationDoc._id, augmentationDoc._id, postTrainingDto.name, serverId
     );
     const success = createdTrainingDoc != null ? true : false;
     return {
