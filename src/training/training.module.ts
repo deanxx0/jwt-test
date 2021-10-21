@@ -1,4 +1,4 @@
-import { HttpModule, Module } from '@nestjs/common';
+import { forwardRef, HttpModule, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AugmentationModule } from 'src/augmentation/augmentation.module';
 import { AuthModule } from 'src/auth/auth.module';
@@ -15,15 +15,16 @@ import { TrainingService } from './training.service';
   imports: [
     MongooseModule.forFeature([{ name: Training.name, schema: TrainingSchema }]),
     HttpModule,
-    DirectoryModule,
-    TrainingConfigurationModule,
-    AugmentationModule,
+    forwardRef(() => TrainingConfigurationModule),
+    forwardRef(() => AugmentationModule),
     ServerModule,
     UserModule,
     TrainServerModule,
     AuthModule,
+    forwardRef(() => DirectoryModule),
   ],
   controllers: [TrainingController],
   providers: [TrainingService],
+  exports: [TrainingService],
 })
 export class TrainingModule {}
