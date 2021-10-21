@@ -26,12 +26,8 @@ export class TrainServerService {
   }
 
   async getTrainStatusFromTrainServer(serverIndex: number, serverTrainId: string): Promise<any> {
-  // async getTrainInfoFromTrainServer(serverIndex: number, serverId: string): Promise<Object> {
-    // console.log(`[train server service] getTrainStatusFromTrainServer`);
     const serverDoc = await this.serverModel.findOne({ index: serverIndex }).exec();
-    // console.log(`serverDoc.uri: ${serverDoc.uri}, serverTrainId: ${serverTrainId}`);
     const response = await this.httpService.get(`http://${serverDoc.uri}/trains/${serverTrainId}`).toPromise();
-    // console.log(`response.data.result.status: ${response.data.result.status}`);
     return response.data.result.status;
   }
 

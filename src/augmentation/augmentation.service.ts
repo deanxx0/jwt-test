@@ -24,6 +24,11 @@ export class AugmentationService {
     return this.augmentationModel.findOne({ _id: _id }).exec();
   }
 
+  async deleteAugmentationBy_id(_id: string): Promise<AugmentationDocument> {
+    console.log(`[augmentation service] deleteAugmentationBy_id`);
+    return this.augmentationModel.findByIdAndDelete(_id).exec();
+  }
+
   buildCreateAugmentationDto(postTrainingDto: PostTrainingDto): CreateAugmentationDto {
     return {
       _id: (new ObjectID()).toString(),

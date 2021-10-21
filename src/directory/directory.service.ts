@@ -32,6 +32,11 @@ export class DirectoryService {
     return this.directoryModel.findOne({ _id: _id }).exec();
   }
 
+  async deleteDirectoryBy_id(_id: string): Promise<DirectoryDocument> {
+    console.log(`[directory service] deleteDirectoryBy_id`);
+    return this.directoryModel.findByIdAndDelete(_id).exec();
+  }
+
   buildCreateDirectoryDtoFromTraining(postTrainingDto: PostTrainingDto): CreateDirectoryDto {
     return {
       _id: (new ObjectID()).toString(),

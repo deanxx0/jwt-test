@@ -24,6 +24,11 @@ export class TrainingConfigurationService {
     return this.trainingConfigurationModel.findOne({ _id: _id }).exec();
   }
 
+  async deleteConfigurationBy_id(_id: string): Promise<TrainingConfigurationDocument> {
+    console.log(`[training configuration service] deleteConfigurationBy_id`);
+    return this.trainingConfigurationModel.findByIdAndDelete(_id).exec();
+  }
+
   buildCreateTrainingConfigurationDto(postTrainingDto: PostTrainingDto): CreateTrainingConfigurationDto {
     return {
       _id: (new ObjectID()).toString(),

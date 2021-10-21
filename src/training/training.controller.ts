@@ -55,10 +55,28 @@ export class TrainingController {
   @Delete(':_id')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'delete training by id'})
-  async deleteTrainingBy_id(@Param('_id') _id: string): Promise<ApiResponseDto> {
-    console.log(`delete training by id!`);
+  async deleteTrainingBy_id(@Request() req, @Param('_id') _id: string): Promise<ApiResponseDto> {
+    console.log(`[training controller] delete training by id!`);
+    const trainingDoc = await this.trainingService.findTrainingBy_id(_id);
+    const userDoc = await this.userService.findOne(req.user.username);
+    const trainStatus = await this.trainServerService.getTrainStatusFromTrainServer(userDoc.serverindex, trainingDoc.serverId);
+    if (trainStatus != 'done' && trainStatus != 'error') {
+      console.log(`training is processing : only training status 'done' or 'error' could be deleted`);
+      return {
+        success: false,
+        result: null,
+      }
+    };
     const deletedTrainingDoc = await this.trainingService.deleteTrainingBy_id(_id);
-    const success = deletedTrainingDoc != null ? true : false;
+    const deletedAugmentationDoc = await this.augmentationService.deleteAugmentationBy_id(deletedTrainingDoc.augmentationId);
+    const deletedDirectoryDoc = await this.directoryService.deleteDirectoryBy_id(deletedTrainingDoc.directoryId);
+    const deletedConfigurationDoc = await this.trainingConfigurationService.deleteConfigurationBy_id(deletedTrainingDoc.configurationId);
+    const success = 
+      deletedTrainingDoc != null 
+      && deletedAugmentationDoc != null
+      && deletedDirectoryDoc != null
+      && deletedConfigurationDoc != null
+      ? true : false;
     return {
       success: success,
       result: deletedTrainingDoc,
@@ -71,7 +89,7 @@ export class TrainingController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get training by id'})
   async getTrainingBy_id(@Request() req, @Param('_id') _id: string): Promise<ApiResponseDto> {
-    console.log(`get training by id!`);
+    console.log(`[training controller] get training by id!`);
     const trainingDoc = await this.trainingService.findTrainingBy_id(_id);
     const userDoc = await this.userService.findOne(req.user.username);
     console.log(`userDoc.serverindex: ${userDoc.serverindex}, trainingDoc.serverId: ${trainingDoc.serverId}`);
@@ -86,14 +104,21 @@ export class TrainingController {
     }
   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @UsePipes(ValidationPipe)
-  // @Get('pages/:pageNo')
-  // @ApiBearerAuth()
-  // @ApiOperation({ summary: 'get training pages'})
-  // async getTrainingPages(@Request() req, @Param('pageNo') pageNo: number): Promise<ApiResponseDto> {
-
-  // }
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(ValidationPipe)
+  @Get('pages/:pageNo')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'get training pages'})
+  async getTrainingPages(@Param('pageNo') pageNo: number): Promise<ApiResponseDto> {
+    console.log(`[training controller] get training pages`);
+    const trainingPages = await this.trainingService.getTrainPages(pageNo);
+    
+    const success = trainingPages != null ? true : false;
+    return {
+      success: success,
+      result: trainingPages.map(idObj => idObj._id),
+    }
+  }
 
   buildResponseTrainingDto(trainingDoc, trainStatus, trainMetrics): ResponseTrainingDto {
     return {

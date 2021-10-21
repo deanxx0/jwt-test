@@ -40,6 +40,18 @@ export class TrainingService {
     return this.trainingModel.findById(_id).exec();
   }
 
+  async getTrainPages(pageNo: number): Promise<any[]> {
+    console.log(`[training service] getTrainPages`);
+    const perPage = 15;
+    return this.trainingModel
+      .find({})
+      .sort({ createdAt: -1 })
+      .limit(perPage)
+      .skip(perPage * (pageNo-1))
+      .select({ _id: 1})
+      .exec();
+  }
+
   buildCreateTrainingDto(
     directoryDoc_id: string, 
     trainingConfigurationDoc_id: string, 
