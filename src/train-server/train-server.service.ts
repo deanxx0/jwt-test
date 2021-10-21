@@ -46,6 +46,13 @@ export class TrainServerService {
     }
   }
 
+  async getResources(serverIndex: number): Promise<any> {
+    console.log(`[train server service] getResources`);
+    const serverDoc = await this.serverModel.findOne({ index: serverIndex }).exec();
+    const response = await this.httpService.get(`http://${serverDoc.uri}/resources/${serverIndex}`).toPromise();
+    return response.data.result;
+  }
+
   buildPostTrainToTrainServerDto(postTrainingDto: PostTrainingDto): PostTrainToTrainServerDto {
     return {
       target_type: 'venus',
