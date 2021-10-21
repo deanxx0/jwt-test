@@ -16,7 +16,7 @@ export class AugmentationController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get augmentations' })
   async getAugmentationsBy_id(@Param('_id') _id: string): Promise<ApiResponseDto> {
-    console.log(`[augmentation controller] get augmentations by id!`);
+    console.log(`[augmentation controller] getAugmentationsBy_id`);
     const augmentationDoc = await this.augmentationService.findOneById(_id);
     const success = augmentationDoc != null ? true : false;
     return {

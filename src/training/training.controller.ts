@@ -33,7 +33,7 @@ export class TrainingController {
   @ApiOperation({ summary: 'create training'})
   @ApiBody({ type: PostTrainingDto })
   async createTraining(@Request() req, @Body() postTrainingDto: PostTrainingDto): Promise<ApiResponseDto> {
-    console.log(`create training!`);
+    console.log(`[training controller] createTraining`);
     const directoryDoc = await this.directoryService.createFromTraining(postTrainingDto);
     const trainingConfigurationDoc = await this.trainingConfigurationService.create(postTrainingDto);
     const augmentationDoc = await this.augmentationService.create(postTrainingDto);
@@ -56,7 +56,7 @@ export class TrainingController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'delete training by id'})
   async deleteTrainingBy_id(@Request() req, @Param('_id') _id: string): Promise<ApiResponseDto> {
-    console.log(`[training controller] delete training by id!`);
+    console.log(`[training controller] deleteTrainingBy_id`);
     const trainingDoc = await this.trainingService.findTrainingBy_id(_id);
     const userDoc = await this.userService.findOne(req.user.username);
     const trainStatus = await this.trainServerService.getTrainStatusFromTrainServer(userDoc.serverindex, trainingDoc.serverId);
@@ -89,7 +89,7 @@ export class TrainingController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get training by id'})
   async getTrainingBy_id(@Request() req, @Param('_id') _id: string): Promise<ApiResponseDto> {
-    console.log(`[training controller] get training by id!`);
+    console.log(`[training controller] getTrainingBy_id`);
     const trainingDoc = await this.trainingService.findTrainingBy_id(_id);
     const userDoc = await this.userService.findOne(req.user.username);
     console.log(`userDoc.serverindex: ${userDoc.serverindex}, trainingDoc.serverId: ${trainingDoc.serverId}`);
@@ -110,7 +110,7 @@ export class TrainingController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get training pages'})
   async getTrainingPages(@Param('pageNo') pageNo: number): Promise<ApiResponseDto> {
-    console.log(`[training controller] get training pages`);
+    console.log(`[training controller] getTrainingPages`);
     const trainingPages = await this.trainingService.getTrainPages(pageNo);
     
     const success = trainingPages != null ? true : false;

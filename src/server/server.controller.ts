@@ -15,7 +15,7 @@ export class ServerController {
   @ApiOperation({ summary: 'create server info'})
   @ApiBody({ type: PostServerDto })
   async create(@Body() postServerDto: PostServerDto): Promise<ApiResponseDto> {
-    console.log(`[server controller] create server info`);
+    console.log(`[server controller] create`);
     const createdDoc = await this.serverService.create(postServerDto);
     const success = createdDoc != null ? true : false;
     return {
@@ -29,7 +29,7 @@ export class ServerController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get server by index'})
   async getServerByIndex(@Param('index') index: number): Promise<ApiResponseDto> {
-    console.log(`[server controller] get server by index`);
+    console.log(`[server controller] getServerByIndex`);
     const serverDoc = await this.serverService.findOneByIndex(index);
     const success = serverDoc != null ? true : false;
     return {

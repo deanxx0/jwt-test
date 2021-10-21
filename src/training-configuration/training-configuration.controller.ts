@@ -16,7 +16,7 @@ export class TrainingConfigurationController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get training configurations' })
   async getConfigurationsBy_id(@Param('_id') _id: string): Promise<ApiResponseDto> {
-    console.log(`[configurations controller] get configurations by id!`);
+    console.log(`[configurations controller] getConfigurationsBy_id`);
     const configurationDoc = await this.trainingConfigurationService.findOneById(_id);
     const success = configurationDoc != null ? true : false;
     return {

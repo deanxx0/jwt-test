@@ -19,7 +19,7 @@ export class AppController {
 
   @Sse('sse')
   sse(): Observable<MessageEvent> {
-    console.log(`sse controller method!`);
+    console.log(`sse controller method`);
     return interval(1000).pipe(map((_) => ({ data: { hello: 'world' } })));
   }
 }
