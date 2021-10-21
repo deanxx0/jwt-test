@@ -16,7 +16,7 @@ export class ResourceController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get resources' })
   async getResourceBy_id(@Body() serverIndexObj): Promise<ApiResponseDto> {
-    console.log(`get resources by id!`);
+    console.log(`[resource controller] get resources by id!`);
     const serverIndex: number = serverIndexObj.serverIndex;
     const resourcesDoc = await this.resourceService.getResourceFromTrainServer(serverIndex);
     const success = resourcesDoc != null ? true : false;

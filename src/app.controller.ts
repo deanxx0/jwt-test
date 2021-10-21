@@ -13,7 +13,7 @@ import { interval, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Controller()
-@ApiTags('login')
+@ApiTags()
 export class AppController {
   constructor() {}
 

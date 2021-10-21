@@ -18,7 +18,7 @@ export class UserController {
   @ApiOperation({ summary: 'Get userid, username'})
   @ApiBearerAuth()
   async getProfile(@Request() req) {
-    console.log(`Get profile!`);
+    console.log(`[user controller] Get profile`);
     return this.userService.findOne(req.user.username);
   }
 
@@ -29,7 +29,7 @@ export class UserController {
   @ApiCreatedResponse({ description: 'access token 발행' })
   @ApiBody({ type: UserDto })
   async login(@Request() req, @Res({ passthrough: true }) response: Response): Promise<ApiResponseDto> {
-    console.log(`Post login!`);
+    console.log(`[user controller] Post login!`);
     const tokenObj = await this.authService.login(req.user);
     response.set('access_token', tokenObj.access_token);
     const success = tokenObj != null ? true : false;
@@ -46,14 +46,14 @@ export class UserController {
   @ApiOperation({ summary: 'my token', description: 'get now using token in cookie' })
   @ApiBearerAuth()
   async getMyToken(@Req() request: ExpressRequest) {
-    console.log(`Get mytoken!`);
+    console.log(`[user controller] Get mytoken!`);
     return request.headers.authorization;
   }
 
   @UsePipes(ValidationPipe)
   @Post('user')
   async createUser(@Body() userDto: UserDto): Promise<UserDocument> {
-    console.log(`Post user!`);
+    console.log(`[user controller] Post user!`);
     return this.userService.create(userDto);
   }
 }

@@ -16,7 +16,7 @@ export class DirectoryController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get directory' })
   async getDirectoriesBy_id(@Param('_id') _id: string): Promise<ApiResponseDto> {
-    console.log(`get directories by id!`);
+    console.log(`[directory controller] get directories by id!`);
     const directoryDoc = await this.dirctoryService.findOneById(_id);
     const success = directoryDoc != null ? true : false;
     return {
