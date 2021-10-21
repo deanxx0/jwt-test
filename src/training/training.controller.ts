@@ -10,6 +10,8 @@ import { TrainServerService } from 'src/train-server/train-server.service';
 import { TrainingConfigurationService } from 'src/training-configuration/training-configuration.service';
 import { UserService } from 'src/user/user.service';
 import { PostTrainingDto } from './post-training.dto';
+import { ResponseTrainingDto } from './response-training.dto';
+import { TrainingDocument } from './training.schema';
 import { TrainingService } from './training.service';
 
 @Controller('training')
@@ -76,25 +78,39 @@ export class TrainingController {
     const trainStatus = await this.trainServerService.getTrainStatusFromTrainServer(userDoc.serverindex, trainingDoc.serverId);
     console.log(`trainStatus: ${trainStatus}`);
     const trainMetrics = await this.trainServerService.getMetricsFromTrainServer(userDoc.serverindex, trainingDoc.serverId);
+    const responseTrainingResult = this.buildResponseTrainingDto(trainingDoc, trainStatus, trainMetrics);
     const success = trainMetrics != null ? true : false;
     return {
       success: success,
-      result: {
-        id: trainingDoc._id,
-        name: trainingDoc.name,
-        status: trainStatus,
-        progress: trainMetrics.iteration / trainMetrics.max_iteration,
-        createdAt: trainingDoc.createdAt,
-        train_loss: trainMetrics.train_loss,
-        test_loss: trainMetrics.test_loss,
-        test_accuracy: trainMetrics.test_accuracy,
-        iou: trainMetrics.test_accuracy2,
-        iteration: trainMetrics.iteration,
-        max_iteration: trainMetrics.max_iteration,
-        directoryId: trainingDoc.directoyId,
-        configurationId: trainingDoc.configurationId,
-        augmentationId: trainingDoc.augmentationId,
-      },
+      result: responseTrainingResult,
+    }
+  }
+
+  // @UseGuards(JwtAuthGuard)
+  // @UsePipes(ValidationPipe)
+  // @Get('pages/:pageNo')
+  // @ApiBearerAuth()
+  // @ApiOperation({ summary: 'get training pages'})
+  // async getTrainingPages(@Request() req, @Param('pageNo') pageNo: number): Promise<ApiResponseDto> {
+
+  // }
+
+  buildResponseTrainingDto(trainingDoc, trainStatus, trainMetrics): ResponseTrainingDto {
+    return {
+      id: trainingDoc._id,
+      name: trainingDoc.name,
+      status: trainStatus,
+      progress: trainMetrics.iteration / trainMetrics.max_iteration,
+      createdAt: trainingDoc.createdAt,
+      train_loss: trainMetrics.train_loss,
+      test_loss: trainMetrics.test_loss,
+      test_accuracy: trainMetrics.test_accuracy,
+      iou: trainMetrics.test_accuracy2,
+      iteration: trainMetrics.iteration,
+      max_iteration: trainMetrics.max_iteration,
+      directoryId: trainingDoc.directoyId,
+      configurationId: trainingDoc.configurationId,
+      augmentationId: trainingDoc.augmentationId,
     }
   }
 }
