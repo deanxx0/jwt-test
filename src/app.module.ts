@@ -11,6 +11,7 @@ import { TrainingConfigurationModule } from './training-configuration/training-c
 import { AugmentationModule } from './augmentation/augmentation.module';
 import { ResourceModule } from './resource/resource.module';
 import { ServerModule } from './server/server.module';
+import { TrainServerModule } from './train-server/train-server.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ServerModule } from './server/server.module';
     AugmentationModule,
     ResourceModule,
     ServerModule,
+    TrainServerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
