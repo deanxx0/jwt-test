@@ -12,7 +12,6 @@ import { UserService } from 'src/user/user.service';
 import { PostTrainingDto } from './post-training.dto';
 import { TrainingService } from './training.service';
 
-
 @Controller('training')
 @ApiTags('training')
 export class TrainingController {
@@ -22,7 +21,7 @@ export class TrainingController {
     private trainingConfigurationService: TrainingConfigurationService,
     private augmentationService: AugmentationService,
     private userService: UserService,
-    private trainService: TrainServerService,
+    private trainServerService: TrainServerService,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -38,7 +37,7 @@ export class TrainingController {
     const augmentationDoc = await this.augmentationService.create(postTrainingDto);
     const userDoc = await this.userService.findOne(req.user.username);
     const serverIndex = userDoc.serverindex;
-    const serverId: string = await this.trainService.postTrain(serverIndex, postTrainingDto);
+    const serverId: string = await this.trainServerService.postTrain(serverIndex, postTrainingDto);
     const createdTrainingDoc = await this.trainingService.create(
       directoryDoc._id, trainingConfigurationDoc._id, augmentationDoc._id, postTrainingDto.name, serverId
     );
@@ -71,15 +70,31 @@ export class TrainingController {
   @ApiOperation({ summary: 'get training by id'})
   async getTrainingBy_id(@Request() req, @Param('_id') _id: string): Promise<ApiResponseDto> {
     console.log(`get training by id!`);
-    //const findResult = await this.trainingService.findOneById(_id);
+    const trainingDoc = await this.trainingService.findTrainingBy_id(_id);
     const userDoc = await this.userService.findOne(req.user.username);
-    const serverIndex = userDoc.serverindex;
-    const trainServerResponseData = await this.trainService.getTrainInfoFromTrainServer(serverIndex, _id);
-    console.log(`trainServerResponse: ${trainServerResponseData}`);
-    const success = trainServerResponseData != null ? true : false;
+    console.log(`userDoc.serverindex: ${userDoc.serverindex}, trainingDoc.serverId: ${trainingDoc.serverId}`);
+    const trainStatus = await this.trainServerService.getTrainStatusFromTrainServer(userDoc.serverindex, trainingDoc.serverId);
+    console.log(`trainStatus: ${trainStatus}`);
+    const trainMetrics = await this.trainServerService.getMetricsFromTrainServer(userDoc.serverindex, trainingDoc.serverId);
+    const success = trainMetrics != null ? true : false;
     return {
       success: success,
-      result: trainServerResponseData,
+      result: {
+        id: trainingDoc._id,
+        name: trainingDoc.name,
+        status: trainStatus,
+        progress: trainMetrics.iteration / trainMetrics.max_iteration,
+        createdAt: trainingDoc.createdAt,
+        train_loss: trainMetrics.train_loss,
+        test_loss: trainMetrics.test_loss,
+        test_accuracy: trainMetrics.test_accuracy,
+        iou: trainMetrics.test_accuracy2,
+        iteration: trainMetrics.iteration,
+        max_iteration: trainMetrics.max_iteration,
+        directoryId: trainingDoc.directoyId,
+        configurationId: trainingDoc.configurationId,
+        augmentationId: trainingDoc.augmentationId,
+      },
     }
   }
 }

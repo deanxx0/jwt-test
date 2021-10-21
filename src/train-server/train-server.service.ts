@@ -15,21 +15,39 @@ export class TrainServerService {
   ) {}
 
   async postTrain(serverIndex: number, postTrainingDto: PostTrainingDto): Promise<string> {
+    console.log(`[train server service] postTrain`);
     const postTrainToTrainServerDto = await this.buildPostTrainToTrainServerDto(postTrainingDto);
     const serverDoc = await this.serverModel.findOne({ index: serverIndex }).exec();
     const response = await this.httpService.post(
       `http://${serverDoc.uri}/trains`,
       postTrainToTrainServerDto,
     ).toPromise();
-    console.log(`[server service] postTrain`);
     return response.data.result.id;
   }
 
-  async getTrainInfoFromTrainServer(serverIndex: number, _id: string): Promise<Observable<AxiosResponse<any>>> {
+  async getTrainStatusFromTrainServer(serverIndex: number, serverTrainId: string): Promise<any> {
+  // async getTrainInfoFromTrainServer(serverIndex: number, serverId: string): Promise<Object> {
+    // console.log(`[train server service] getTrainStatusFromTrainServer`);
     const serverDoc = await this.serverModel.findOne({ index: serverIndex }).exec();
-    const response = await this.httpService.get(`http://${serverDoc.uri}/training/${_id}`).toPromise();
-    console.log(`[server service] getTrainInfoFromTrainServer`);
-    return response.data;
+    // console.log(`serverDoc.uri: ${serverDoc.uri}, serverTrainId: ${serverTrainId}`);
+    const response = await this.httpService.get(`http://${serverDoc.uri}/trains/${serverTrainId}`).toPromise();
+    // console.log(`response.data.result.status: ${response.data.result.status}`);
+    return response.data.result.status;
+  }
+
+  async getMetricsFromTrainServer(serverIndex: number, serverTrainId: string): Promise<any> {
+    console.log(`[train server service] getMetricsFromTrainServer`);
+    const serverDoc = await this.serverModel.findOne({ index: serverIndex }).exec();
+    const response = await this.httpService.get(`http://${serverDoc.uri}/trains/${serverTrainId}/metrics/pages/0`).toPromise();
+    const result: any[] = response.data.result;
+    return {
+      train_loss: result[result.length-1].train_loss,
+      test_loss: result[result.length-1].test_loss,
+      test_accuracy: result[result.length-1].test_accuracy,
+      iou: result[result.length-1].test_accuracy2,
+      iteration: result[result.length-1].current_iteration,
+      max_iteration: result[result.length-1].max_iteration,
+    }
   }
 
   buildPostTrainToTrainServerDto(postTrainingDto: PostTrainingDto): PostTrainToTrainServerDto {

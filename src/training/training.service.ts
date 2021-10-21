@@ -35,6 +35,11 @@ export class TrainingService {
     return this.trainingModel.findByIdAndDelete(_id).exec();
   }
 
+  async findTrainingBy_id(_id: string): Promise<any> {
+    console.log(`[training service] findTrainingBy_id`);
+    return this.trainingModel.findById(_id).exec();
+  }
+
   buildCreateTrainingDto(
     directoryDoc_id: string, 
     trainingConfigurationDoc_id: string, 
