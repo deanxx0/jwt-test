@@ -13,15 +13,6 @@ import { Request as ExpressRequest, Response } from 'express';
 export class UserController {
   constructor(private userService: UserService, private authService: AuthService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  @ApiOperation({ summary: 'Get userid, username'})
-  @ApiBearerAuth()
-  async getProfile(@Request() req) {
-    console.log(`[user controller] getProfile`);
-    return this.userService.findOne(req.user.username);
-  }
-
   @UsePipes(ValidationPipe)
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -39,6 +30,15 @@ export class UserController {
         access_token: tokenObj.access_token,
       }
     }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  @ApiOperation({ summary: 'Get userid, username'})
+  @ApiBearerAuth()
+  async getProfile(@Request() req) {
+    console.log(`[user controller] getProfile`);
+    return this.userService.findOne(req.user.username);
   }
 
   @UseGuards(JwtAuthGuard)
