@@ -3,8 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Server, ServerDocument } from 'src/server/server.schema';
 import { PostTrainingDto } from 'src/training/post-training.dto';
-import { Observable } from 'rxjs';
-import { AxiosResponse } from 'axios';
 import { PostTrainToTrainServerDto } from 'src/training/post-train-to-train-server.dto';
 
 @Injectable()

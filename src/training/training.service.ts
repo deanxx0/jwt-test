@@ -1,20 +1,14 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateTrainingDto } from './create-training.dto';
 import { Training, TrainingDocument } from './training.schema';
 import { ObjectID } from 'bson';
-import { Observable } from 'rxjs';
-import { AxiosResponse } from 'axios';
-import { PostTrainingDto } from './post-training.dto';
-import { PostTrainToTrainServerDto } from './post-train-to-train-server.dto';
-
 
 @Injectable()
 export class TrainingService {
   constructor(
     @InjectModel(Training.name) private trainingModel: Model<TrainingDocument>,
-    private httpService: HttpService,
   ) {}
 
   async create(

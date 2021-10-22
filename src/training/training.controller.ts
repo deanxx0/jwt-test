@@ -2,16 +2,13 @@ import { Body, Controller, Delete, Get, Request, Param, Post, UseGuards, UsePipe
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ApiResponseDto } from 'src/api-response.dto';
 import { AugmentationService } from 'src/augmentation/augmentation.service';
-import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { DirectoryService } from 'src/directory/directory.service';
-import { ServerService } from 'src/server/server.service';
 import { TrainServerService } from 'src/train-server/train-server.service';
 import { TrainingConfigurationService } from 'src/training-configuration/training-configuration.service';
 import { UserService } from 'src/user/user.service';
 import { PostTrainingDto } from './post-training.dto';
 import { ResponseTrainingDto } from './response-training.dto';
-import { TrainingDocument } from './training.schema';
 import { TrainingService } from './training.service';
 
 @Controller('training')

@@ -1,10 +1,9 @@
-import { Body, Controller, Get, Param, UseGuards, Request, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards, Request, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { ApiResponseDto } from 'src/api-response.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { TrainServerService } from 'src/train-server/train-server.service';
 import { UserService } from 'src/user/user.service';
-import { ResourceService } from './resource.service';
 
 @Controller('resources')
 export class ResourceController {

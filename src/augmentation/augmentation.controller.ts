@@ -27,19 +27,4 @@ export class AugmentationController {
       result: augmentationDoc,
     }
   }
-
-  // @UseGuards(JwtAuthGuard)
-  // @UsePipes(ValidationPipe)
-  // @Get(':_id')
-  // @ApiBearerAuth()
-  // @ApiOperation({ summary: 'get augmentations' })
-  // async getAugmentationsBy_id(@Param('_id') _id: string): Promise<ApiResponseDto> {
-  //   console.log(`[augmentation controller] getAugmentationsBy_id`);
-  //   const augmentationDoc = await this.augmentationService.findOneById(_id);
-  //   const success = augmentationDoc != null ? true : false;
-  //   return {
-  //     success: success,
-  //     result: augmentationDoc,
-  //   }
-  // }
 }
